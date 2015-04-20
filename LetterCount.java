@@ -1,23 +1,21 @@
 import java.util.Map;
 import java.util.HashMap;
 import java.util.TreeSet;
-import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Comparator;
 
 public class LetterCount
 {
  private Map<Character,Integer> map;
- private Set<Character> keySet;
  private int lengthOfString = 0;
  private int frequencyOfLetter = 1;
 
  LetterCount()
  {
  map = new HashMap<Character,Integer>();
- keySet = new TreeSet<Character>();
  }
 
  public void printLettersFrequency(String testString)
@@ -34,20 +32,22 @@ public class LetterCount
    map.put(ch,frequencyOfLetter);
    frequencyOfLetter = 1;
   }
- keySet = map.keySet();
- Iterator<Character> treeSetIterator = keySet.iterator();
- List<Character> keyList = new ArrayList<Character>();
- while(treeSetIterator.hasNext())
-  {
-  keyList.add(treeSetIterator.next());
-  }
- Collections.sort(keyList);
- System.out.println("\nCharacter \tFrequency");
- System.out.println("---------------------------------------");
- for(int index = keyList.size()-1; index >= 0 ; index--)
-  {
-  Character ch1 = keyList.get(index);
-  System.out.println(ch1 + " \t\t" + map.get(ch1));
-  }
+ System.out.println(map);
+ System.out.println(entriesSortedByValues());
  }
+ List<Entry<Character, Integer>> entriesSortedByValues() {
+
+    List<Entry<Character,Integer>> sortedEntries = new ArrayList<Entry<Character,Integer>>(map.entrySet());
+
+    Collections.sort(sortedEntries, 
+            new Comparator<Entry<Character,Integer>>() {
+                @Override
+                public int compare(Entry<Character,Integer> value1, Entry<Character,Integer> value2) {
+                    return value2.getValue().compareTo(value1.getValue());
+                }
+            }
+    );
+
+    return sortedEntries;
+}
 }
